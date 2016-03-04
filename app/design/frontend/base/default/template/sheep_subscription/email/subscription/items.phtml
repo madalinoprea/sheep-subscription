@@ -1,0 +1,51 @@
+<?php
+/** @var Sheep_Subscription_Block_Subscription_Items $this */
+
+/** @var Sheep_Subscription_Model_Subscription $_subscription */
+$_subscription = $this->getSubscription();
+$_items = $_subscription->getQuote()->getAllItems();
+$_itemCount = count ($_items);
+$store = Mage::app()->getStore();
+?>
+<tr>
+    <td>
+        <table class="items" cellpadding="0" cellspacing="0" border="0">
+            <thead>
+            <tr>
+                <th class="cell-name">
+                    <?php if($_itemCount > 1): ?>
+                        <?php echo $this->__('Items in your order'); ?>
+                    <?php else: ?>
+                        <?php echo $this->__('Item in your order'); ?>
+                    <?php endif; ?>
+                </th>
+                <th class="cell-name align-left">
+                    <?php echo $this->__('Qty'); ?>
+                </th>
+                <th class="cell-name align-left">
+                    <?php echo $this->__('Price'); ?>
+                </th>
+            </tr>
+
+            </thead>
+            <?php $i=0; foreach ($_items as $_item): ?>
+                <?php if($_item->getParentItem()) continue; else $i++; ?>
+                <?php echo $this->getItemHtml($_item) ?>
+            <?php endforeach; ?>
+        </table>
+    </td>
+</tr>
+
+<tr>
+    <td>
+        <table class="table-totals" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td class="padding-totals">
+                    <table cellpadding="0" cellspacing="0" border="0">
+                        <?php echo $this->getChildHtml('subscription_totals'); ?>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </td>
+</tr>

@@ -1,0 +1,59 @@
+<?php
+/** @var Sheep_Subscription_Block_History $this */
+?>
+<?php echo $this->getMessagesBlock()->toHtml() ?>
+<?php $_subscriptions = $this->getSubscriptions(); ?>
+<div class="page-title">
+    <h1><?php echo $this->__('My Subscriptions') ?></h1>
+</div>
+<?php echo $this->getPagerHtml(); ?>
+<?php if($_subscriptions->getSize()): ?>
+    <table class="data-table orders" id="my-subscriptions-table">
+        <col width="1" />
+        <col />
+        <col width="2" />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
+        <thead>
+        <tr>
+            <th class="number"><?php echo $this->__('#') ?></th>
+            <th><?php echo $this->__('Description'); ?></th>
+            <th class="type"><?php echo $this->__('Frequency') ?></th>
+            <th class="date"><?php echo $this->__('Next Renewal') ?></th>
+            <th class="ship"><?php echo $this->__('Ship To') ?></th>
+            <th class="total"><span class="nobr"><?php echo $this->__('Total') ?></span></th>
+            <th class="status"><span class="nobr"><?php echo $this->__('Status') ?></span></th>
+            <th class="view">&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php $_odd = ''; ?>
+        <?php
+        /** @var Sheep_Subscription_Model_Subscription $_subscription */
+        foreach ($_subscriptions as $_subscription): ?>
+            <tr>
+                <td class="number"><?php echo $_subscription->getId() ?></td>
+                <td><a href="<?php echo $this->getViewUrl($_subscription) ?>"><?php echo $this->escapeHtml($_subscription->getShortDescription()) ?></a></td>
+                <td class="date"><?php echo $this->escapeHtml($_subscription->getType()->getTitle()) ?></td>
+                <td class="date"><span class="nobr"><?php echo $_subscription->getRenewalDate() ? $this->formatDate($_subscription->getRenewalDate()) : $this->__('N/A') ?></span></td>
+                <td class="ship"><?php echo $_subscription->getQuote()->getShippingAddress() ? $this->escapeHtml($_subscription->getQuote()->getShippingAddress()->getName()) : '' ?></td>
+                <td class="total"><?php echo $this->helper('checkout')->formatPrice($_subscription->getQuote()->getGrandTotal()) ?></td>
+                <td class="status"><em><?php echo $_subscription->getStatusLabel() ?></em></td>
+                <td class="a-center view">
+                <span class="nobr">
+                    <a href="<?php echo $this->getViewUrl($_subscription) ?>"><?php echo $this->__('View') ?></a>
+<!--                    --><?php //if ($this->helper('sales/reorder')->canReorder($_subscription)) : ?>
+<!--                        <span class="separator">|</span> <a href="--><?php //echo $this->getReorderUrl($_subscription) ?><!--" class="link-reorder">--><?php //echo $this->__('Reorder') ?><!--</a>-->
+<!--                    --><?php //endif ?>
+                </span>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+    <script type="text/javascript">decorateTable('my-subscriptions-table');</script>
+    <?php echo $this->getPagerHtml(); ?>
+<?php else: ?>
+    <p><?php echo $this->__('You have placed no subscriptions.'); ?></p>
+<?php endif ?>

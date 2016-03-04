@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<layout>
+
+    <default>
+        <reference name="top.links">
+            <action method="addLink" translate="label title" module="sheep_subscription">
+                <label>My Subscriptions</label>
+                <url helper="sheep_subscription/getSubscriptionListUrl"/>
+                <title>My Subscriptions</title>
+                <prepare/>
+                <urlParams/>
+                <position>11</position>
+            </action>
+        </reference>
+    </default>
+
+    <customer_account>
+        <reference name="customer_account_navigation">
+            <action method="addLink" translate="label" module="sheep_subscription">
+                <name>sheep_subscription</name>
+                <path>subscriptions/index/index</path>
+                <label>My Subscriptions</label>
+            </action>
+        </reference>
+    </customer_account>
+
+
+    <!-- Show subscription info on shopping bag -->
+    <SHEEP_RECURRING_PRODUCT_INFO>
+        <reference name="additional.product.info">
+            <block type="sheep_subscription/cart_item_info" name="sheep.subscription.product_info"
+                   template="sheep_subscription/cart/item/info.phtml"/>
+        </reference>
+    </SHEEP_RECURRING_PRODUCT_INFO>
+
+    <checkout_cart_index>
+        <update handle="SHEEP_RECURRING_PRODUCT_INFO"/>
+    </checkout_cart_index>
+
+    <checkout_onepage_review>
+        <update handle="SHEEP_RECURRING_PRODUCT_INFO"/>
+    </checkout_onepage_review>
+
+    <sheep_subscription_index_index>
+        <label>Customer My Account Subscriptions</label>
+        <update handle="customer_account"/>
+
+        <reference name="my.account.wrapper">
+            <block type="sheep_subscription/history" name="sheep.subscription.history"
+                   template="sheep_subscription/subscription/history.phtml">
+            </block>
+        </reference>
+
+    </sheep_subscription_index_index>
+
+    <sheep_subscription_index_view>
+        <label>Customer My Account Subscription Page</label>
+        <update handle="customer_account"/>
+        <reference name="head">
+            <action method="addItem">
+                <type>js_css</type>
+                <name>sheep_subscription/subscription.css</name>
+            </action>
+        </reference>
+        <reference name="my.account.wrapper">
+            <block type="sheep_subscription/subscription_info" as="info" name="sheep.subscription.info"
+                   template="sheep_subscription/subscription/info.phtml"/>
+
+            <block type="sheep_subscription/subscription_view" name="sheep.subscription.view"
+                   template="sheep_subscription/subscription/view.phtml">
+                <block type="sheep_subscription/subscription_view" name="subscription_shipping_info"
+                       template="sheep_subscription/subscription/view/shipping_info.phtml"/>
+                <block type="sheep_subscription/subscription_view" name="subscription_payment_info"
+                       template="sheep_subscription/subscription/view/payment_info.phtml"/>
+                <block type="sheep_subscription/subscription_items" name="subscription_items"
+                       template="sheep_subscription/subscription/items.phtml"/>
+                <block type="sheep_subscription/subscription_view" name="subscription_renewals"
+                       template="sheep_subscription/subscription/renewals.phtml"/>
+                <block type="sheep_subscription/subscription_totals" name="subscription_totals"
+                       template="checkout/cart/totals.phtml"/>
+            </block>
+        </reference>
+    </sheep_subscription_index_view>
+
+    <sheep_subscription_index_editshippingaddress>
+        <label>Customer My Account Edit Subscription Shipping Address Page</label>
+        <update handle="customer_account"/>
+        <reference name="head">
+            <action method="addJs"><name>sheep_subscription/subscription.js</name></action>
+        </reference>
+        <reference name="my.account.wrapper">
+            <block type="sheep_subscription/subscription_info" as="info" name="sheep.subscription.info"
+                   template="sheep_subscription/subscription/info.phtml"/>
+            <block type="sheep_subscription/subscription_view" name="subscription_shipping_info"
+                   template="sheep_subscription/subscription/view/shipping_info.phtml"/>
+            <block type="sheep_subscription/subscription_edit_shippingAddress"
+                   name="sheep.subscription.edit_shipping_address"
+                   template="sheep_subscription/subscription/edit/shipping_address.phtml">
+            </block>
+        </reference>
+    </sheep_subscription_index_editshippingaddress>
+
+    <sheep_subscription_index_editshippingmethod>
+        <label>Customer My Account Edit Subscription Shipping Method Page</label>
+        <update handle="customer_account"/>
+
+        <reference name="my.account.wrapper">
+            <block type="sheep_subscription/subscription_info" as="info" name="sheep.subscription.info"
+                   template="sheep_subscription/subscription/info.phtml"/>
+
+            <block type="sheep_subscription/subscription_view" name="subscription_shipping_info"
+                   template="sheep_subscription/subscription/view/shipping_info.phtml"/>
+
+            <block type="sheep_subscription/subscription_edit_shippingMethod"
+                   name="sheep.subscription.edit_shipping_method"
+                   template="sheep_subscription/subscription/edit/shipping_method.phtml">
+            </block>
+        </reference>
+    </sheep_subscription_index_editshippingmethod>
+
+    <sheep_subscription_index_editpayment>
+        <label>Customer My Account Edit Subscription Payment Page</label>
+        <update handle="customer_account"/>
+        <reference name="my.account.wrapper">
+            <block type="sheep_subscription/subscription_info" as="info" name="sheep.subscription.info"
+                   template="sheep_subscription/subscription/info.phtml"/>
+
+            <block type="sheep_subscription/subscription_view" name="subscription_payment_info"
+                   template="sheep_subscription/subscription/view/payment_info.phtml"/>
+
+            <block type="sheep_subscription/subscription_edit_payment"
+                   name="sheep.subscription.edit_payment"
+                   template="sheep_subscription/subscription/edit/payment.phtml">
+            </block>
+        </reference>
+    </sheep_subscription_index_editpayment>
+
+    <sheep_subscription_email_subscription_items>
+        <block type="sheep_subscription/subscription_items" name="subscription_items" template="sheep_subscription/email/subscription/items.phtml">
+            <action method="addItemRender">
+                <type>default</type>
+                <block>sheep_subscription/subscription_item_renderer</block>
+                <template>sheep_subscription/email/subscription/items/default.phtml</template>
+            </action>
+            <action method="addItemRender">
+                <type>configurable</type>
+                <block>sheep_subscription/subscription_item_renderer</block>
+                <template>sheep_subscription/email/subscription/items/default.phtml</template>
+            </action>
+            <action method="addItemRender">
+                <type>bundle</type>
+                <block>sheep_subscription/subscription_item_renderer</block>
+                <template>sheep_subscription/email/subscription/items/default.phtml</template>
+            </action>
+            <action method="addItemRender">
+                <type>downloadable</type>
+                <block>sheep_subscription/subscription_item_renderer</block>
+                <template>sheep_subscription/email/subscription/items/default.phtml</template>
+            </action>
+            <block type="sheep_subscription/subscription_totals" name="subscription_totals" template="sheep_subscription/email/subscription/totals.phtml"/>
+        </block>
+    </sheep_subscription_email_subscription_items>
+
+    <sheep_subscription_email_subscription_overview>
+        <block type="sheep_subscription/subscription_email_overview" name="subscription_email_overview"
+               template="sheep_subscription/email/subscription/overview.phtml"/>
+    </sheep_subscription_email_subscription_overview>
+</layout>

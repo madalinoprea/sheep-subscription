@@ -1,0 +1,36 @@
+<?php
+/** @var $this Sheep_Subscription_Block_Subscription_View */
+$_subscription = $this->getSubscription();
+?>
+<div class="col2-set order-info-box">
+    <div class="col-1">
+        <div class="box">
+            <div class="box-title">
+                <h2><?php echo $this->__('Shipping Address') ?></h2>
+            </div>
+            <div class="box-content">
+                <address><?php echo $_subscription->getShippingAddress()->format('html') ?></address>
+                <?php if ($this->canChangeShippingInformation()): ?>
+                    <p><a href="<?php echo $this->getEditShippingAddressUrl() ?>" title="<?php echo $this->__('Edit Shipping Address'); ?>"><?php echo $this->__('Edit Shipping Address') ?></a></p>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-2">
+        <div class="box">
+            <div class="box-title">
+                <h2><?php echo $this->__('Shipping Method') ?></h2>
+            </div>
+            <div class="box-content">
+                <?php if ($_shippingDescription = $_subscription->getShippingAddress()->getShippingDescription()): ?>
+                    <?php echo $this->escapeHtml($_shippingDescription) ?>
+                <?php else: ?>
+                    <p><?php echo $this->helper('sheep_subscription')->__('No shipping information available'); ?></p>
+                <?php endif; ?>
+                <?php if ($this->canChangeShippingInformation()): ?>
+                    <p><a href="<?php echo $this->getEditShippingMethodUrl() ?>" title="<?php echo $this->__('Edit Shipping Method'); ?>"><?php echo $this->__('Edit Shipping Method') ?></a></p>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>

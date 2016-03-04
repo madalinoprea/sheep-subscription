@@ -1,0 +1,209 @@
+<?xml version="1.0"?>
+
+<config>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <catalog>
+                        <children>
+                            <sheep_subscription translate="title" module="sheep_subscription">
+                                <title>Manage Subscriptions</title>
+                                <children>
+                                    <view_types translate="title" module="sheep_subscription">
+                                        <title>View Subscription Types</title>
+                                        <sort_order>10</sort_order>
+                                    </view_types>
+                                    <edit_types translate="title" module="sheep_subscription">
+                                        <title>Edit Subscription Types</title>
+                                        <sort_order>10</sort_order>
+                                    </edit_types>
+                                    <view_product_setup translate="title" module="sheep_subscription">
+                                        <title>View Product Subscription Configuration</title>
+                                        <sort_order>20</sort_order>
+                                    </view_product_setup>
+                                    <edit_product_setup translate="title" module="sheep_subscription">
+                                        <title>Edit Product Subscription Configuration</title>
+                                        <sort_order>30</sort_order>
+                                    </edit_product_setup>
+                                    <view_product_subscription_prices translate="title" module="sheep_subscription">
+                                        <title>View Product Subscription Prices</title>
+                                        <sort_order>40</sort_order>
+                                    </view_product_subscription_prices>
+                                    <edit_product_subscription_prices translate="title" module="sheep_subscription">
+                                        <title>Edit Product Subscription Prices</title>
+                                        <sort_order>50</sort_order>
+                                    </edit_product_subscription_prices>
+                                </children>
+                            </sheep_subscription>
+                        </children>
+                    </catalog>
+                    <customer>
+                        <children>
+                            <sheep_subscription_view translate="title" module="sheep_subscription">
+                                <title>View Customer Subscription Tab</title>
+                                <sort_order>20</sort_order>
+                            </sheep_subscription_view>
+                        </children>
+                    </customer>
+                    <sales>
+                        <children>
+                            <sheep_subscription translate="title" module="sheep_subscription">
+                                <title>Subscriptions</title>
+                                <sort_order>15</sort_order>
+                                <children>
+                                    <view_subscriptions translate="title" module="sheep_subscription">
+                                        <title>View Subscriptions</title>
+                                        <sort_order>10</sort_order>
+                                    </view_subscriptions>
+                                    <view_subscription_details translate="title" module="sheep_subscription">
+                                        <title>View Subscription Details</title>
+                                        <sort_order>20</sort_order>
+                                    </view_subscription_details>
+                                    <view_subscription_renewals translate="title">
+                                        <title>View Subscription Renewals</title>
+                                        <sort_order>30</sort_order>
+                                    </view_subscription_renewals>
+                                    <edit_subscription translate="title">
+                                        <title>Edit Subscriptions</title>
+                                        <sort_order>40</sort_order>
+                                    </edit_subscription>
+
+                                    <view_renewals translate="title" module="sheep_subscription">
+                                        <title>View Renewals</title>
+                                        <sort_order>100</sort_order>
+                                    </view_renewals>
+                                </children>
+                            </sheep_subscription>
+                        </children>
+                    </sales>
+                    <report>
+                        <children>
+                            <sheep_subscription translate="title" module="sheep_subscription">
+                                <title>Subscriptions</title>
+                                <sort_order>15</sort_order>
+                                <children>
+                                    <new_subscribers translate="title">
+                                        <title>New Subscribers</title>
+                                        <sort_order>10</sort_order>
+                                    </new_subscribers>
+                                    <new_subscriptions translate="title">
+                                        <title>New Subscriptions</title>
+                                        <sort_order>20</sort_order>
+                                    </new_subscriptions>
+                                    <canceled_subscriptions translate="title">
+                                        <title>Canceled Subscriptions</title>
+                                        <sort_order>30</sort_order>
+                                    </canceled_subscriptions>
+                                    <best_recurring_products translate="title">
+                                        <title>Best Recurring Products</title>
+                                        <sort_order>40</sort_order>
+                                    </best_recurring_products>
+                                    <scheduled_renewals translate="title">
+                                        <title>Scheduled Renewals</title>
+                                        <sort_order>50</sort_order>
+                                    </scheduled_renewals>
+                                    <renewal_timeline translate="title">
+                                        <title>Renewal Timeline Forecast</title>
+                                        <sort_order>60</sort_order>
+                                    </renewal_timeline>
+                                    <inventory_planning translate="title">
+                                        <title>Renewal Inventory Planning</title>
+                                        <sort_order>70</sort_order>
+                                    </inventory_planning>
+                                </children>
+                            </sheep_subscription>
+                        </children>
+                    </report>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <sheep_subscription>
+                                        <title>Subscription Configuration</title>
+                                    </sheep_subscription>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+    <menu>
+        <catalog>
+            <children>
+                <sheep_subscription translate="title" module="sheep_subscription">
+                    <title>Manage Subscriptions</title>
+                    <sort_order>12</sort_order>
+                    <children>
+                        <view_types translate="title" module="sheep_subscription">
+                            <title>Manage Types</title>
+                            <action>adminhtml/subscriptionType</action>
+                            <sort_order>10</sort_order>
+                        </view_types>
+                    </children>
+                </sheep_subscription>
+            </children>
+        </catalog>
+        <sales>
+            <children>
+                <sheep_subscription translate="title" module="sheep_subscription">
+                    <title>Subscriptions</title>
+                    <sort_order>58</sort_order>
+                    <action>adminhtml/subscription</action>
+                    <children>
+                        <view_subscriptions translate="title" module="sheep_subscription">
+                            <title>Subscriptions</title>
+                            <sort_order>10</sort_order>
+                            <action>adminhtml/subscription</action>
+                        </view_subscriptions>
+                        <view_renewals translate="title" module="sheep_subscription">
+                            <title>Renewals</title>
+                            <action>adminhtml/renewal</action>
+                            <sort_order>20</sort_order>
+                        </view_renewals>
+                    </children>
+                </sheep_subscription>
+            </children>
+        </sales>
+        <report>
+            <children>
+                <sheep_subscription translate="title" module="sheep_subscription">
+                    <title>Subscriptions</title>
+                    <sort_order>11</sort_order>
+                    <children>
+                        <new_subscribers translate="title" module="sheep_subscription">
+                            <title>New Subscribers</title>
+                            <action>adminhtml/report_subscribers/new</action>
+                        </new_subscribers>
+                        <new_subscriptions translate="title" module="sheep_subscription">
+                            <title>New Subscriptions</title>
+                            <action>adminhtml/report_subscription/new</action>
+                        </new_subscriptions>
+                        <canceled_subscriptions translate="title" module="sheep_subscription">
+                            <title>Canceled Subscriptions</title>
+                            <action>adminhtml/report_subscription/canceled</action>
+                        </canceled_subscriptions>
+                        <best_recurring_products translate="title" module="sheep_subscription">
+                            <title>Best Recurring Products</title>
+                            <action>adminhtml/report_product/best</action>
+                        </best_recurring_products>
+                        <scheduled_renewals translate="title" module="sheep_subscription">
+                            <title>Scheduled Renewals</title>
+                            <action>adminhtml/report_renewal/scheduled</action>
+                        </scheduled_renewals>
+                        <renewal_timeline translate="title" module="sheep_subscription">
+                            <title>Renewal Timeline Forecast</title>
+                            <action>adminhtml/report_renewal/timeline</action>
+                        </renewal_timeline>
+                        <inventory_planning translate="title" modul="sheep_subscription">
+                            <title>Renewal Inventory Planning</title>
+                            <action>adminhtml/report_inventory/planning</action>
+                        </inventory_planning>
+                    </children>
+                </sheep_subscription>
+            </children>
+        </report>
+    </menu>
+</config>

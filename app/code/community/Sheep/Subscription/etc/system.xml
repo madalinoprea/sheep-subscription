@@ -1,0 +1,291 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <sheep>
+            <label>Pirate Sheep</label>
+            <sort_order>100</sort_order>
+        </sheep>
+    </tabs>
+    <sections>
+        <sheep_subscription translate="label" module="sheep_subscription">
+            <label>Subscriptions</label>
+            <tab>sheep</tab>
+            <sort_order>10</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+
+            <groups>
+                <account translate="label" module="sheep_subscription">
+                    <label>Customer Account Settings</label>
+                    <sort_order>50</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <allow_management translate="label">
+                            <label>Allow Customer to Manage Subscriptions</label>
+                            <comment>If this setting is set to Yes, customers will be able to pause, resume or cancel their subscriptions from My Account.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </allow_management>
+                        <allow_renewal_date_edit>
+                            <label>Allow Customer to Edit Next Renewal Date</label>
+                            <comment>If this setting is set to Yes, customers will be able to edit date of their next renewal.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </allow_renewal_date_edit>
+                        <allow_shipping_info_edit>
+                            <label>Allow Customer to Edit Shipping Information</label>
+                            <comment>If this setting is set to Yes, customers will be able to change shipping address and shipping method.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>300</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </allow_shipping_info_edit>
+                        <allow_payment_info_edit>
+                            <label>Allow Customer to Edit Payment Information</label>
+                            <comment>If this setting is set to Yes, customers will be able to change payment information. Current subscription is going to be cancelled and a new subscription will be created.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>400</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </allow_payment_info_edit>
+                    </fields>
+                </account>
+
+                <checkout translate="label" module="sheep_subscription">
+                    <label>Checkout Settings</label>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+
+                    <fields>
+                        <payment_methods translate="label">
+                            <label>Subscription Payment Methods</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>sheep_subscription/system_config_source_payment</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Payment methods that customers can use to purchase subscription products.</comment>
+                        </payment_methods>
+                    </fields>
+                </checkout>
+
+                <renewals translate="label" module="sheep_subscription">
+                    <label>Renewal Settings</label>
+                    <sort_order>200</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+
+                    <fields>
+                        <max_failed_payments>
+                            <label>Maximum Failed Payments</label>
+                            <comment>Subscription is expired if its renewal fails.</comment>
+                            <sort_order>50</sort_order>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <validate>validate-zero-or-greater</validate>
+                        </max_failed_payments>
+
+                        <upcoming_renewals_notification>
+                            <label>Send customer notification for upcoming renewals</label>
+                            <sort_order>60</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </upcoming_renewals_notification>
+
+                        <days_before_renewal>
+                            <label>Days before upcoming renewal</label>
+                            <comment>Number of days before renewal when customers are notified.</comment>
+                            <sort_order>61</sort_order>
+                            <depends>
+                                <upcoming_renewals_notification>1</upcoming_renewals_notification>
+                            </depends>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-greater-than-zero</validate>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </days_before_renewal>
+
+                        <expired_payment_notification>
+                            <label>Notifies customer for payments that are about to expire</label>
+                            <sort_order>70</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </expired_payment_notification>
+
+                        <expired_payment_days_before>
+                            <label>Days before expired payment</label>
+                            <comment>Customers are notified in advanced with this number of days about a payment that is about to expire.</comment>
+                            <sort_order>71</sort_order>
+                            <depends>
+                                <expired_payment_notification>1</expired_payment_notification>
+                            </depends>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-zero-or-greater</validate>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </expired_payment_days_before>
+
+                        <schedule_cron_expr translate="label">
+                            <label>Renewal Check Schedule</label>
+                            <comment>Defines how often renewals are verified and placed into processing queue. Use values like (every 30 minutes): */30 * * * *</comment>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>100</sort_order>
+                        </schedule_cron_expr>
+
+                        <process_cron_exp>
+                            <label>Renewal Process Schedule</label>
+                            <comment>Defines how often we check renewal processing queue.</comment>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>200</sort_order>
+                        </process_cron_exp>
+
+                        <process_iteration_messages>
+                            <label>Processed Messages Per Cron</label>
+                            <comment>Defines how many renewals are processed for each cron iteration.</comment>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>210</sort_order>
+                            <validate>validate-greater-than-zero</validate>
+                        </process_iteration_messages>
+
+                        <process_message_timeout>
+                            <label>Message Timeout</label>
+                            <comment>Seconds after message will be re-processed.</comment>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <sort_order>220</sort_order>
+                            <validate>validate-greater-than-zero</validate>
+                        </process_message_timeout>
+
+                    </fields>
+
+                </renewals>
+
+                <segmentation translate="label" module="sheep_subscription">
+                    <label>Customer Segmentation Settings</label>
+                    <sort_order>300</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <default_customer_group_promotion>
+                            <label>Default Customer Group Promotion</label>
+                            <comment>Customer is moved to this group after subscription purchase.</comment>
+                            <sort_order>10</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_customer_group</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </default_customer_group_promotion>
+                        <default_customer_group_demotion>
+                            <label>Default Customer Group Demotion</label>
+                            <comment>Customer is moved to specified customer group if last active subscription is paused, canceled or expired.</comment>
+                            <sort_order>20</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_customer_group</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </default_customer_group_demotion>
+                    </fields>
+                </segmentation>
+
+                <reports translate="label" module="sheep_subscription">
+                    <label>Reports Settings</label>
+                    <sort_order>400</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <qty_ordered_avg_period>
+                            <label>Ordered Average Period</label>
+                            <comment>Orders placed in the last number of days specified are used to compute stock average used in forecast.</comment>
+                            <sort_order>10</sort_order>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_class>number</frontend_class>
+                            <validate>validate-not-negative-number</validate>
+                        </qty_ordered_avg_period>
+
+                        <forecast_receiver translate="label">
+                            <label>Receiver E-mail for Inventory Report</label>
+                            <comment>E-mail address that is going to receive forecast inventory report.</comment>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-email</validate>
+                        </forecast_receiver>
+
+                        <forecast_cron_expr translate="label">
+                            <label>Frequency for Inventory Report</label>
+                            <comment>Defines how often forecast inventory report is sent. Use values like (at 5 am on every Monday): 0 5 * * 1</comment>
+                            <sort_order>30</sort_order>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </forecast_cron_expr>
+
+                        <forecast_period translate="label">
+                            <label>Forecasted Days</label>
+                            <comment>Number of future days included in forecast inventory report.</comment>
+                            <sort_order>40</sort_order>
+                            <frontend_type>text</frontend_type>
+                            <frontend_class>number</frontend_class>
+                            <validate>validate-not-negative-number</validate>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </forecast_period>
+                    </fields>
+                </reports>
+
+            </groups>
+        </sheep_subscription>
+    </sections>
+
+</config>

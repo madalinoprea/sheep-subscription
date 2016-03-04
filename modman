@@ -1,0 +1,6 @@
+app/code/community/Sheep/Subscription                               app/code/community/Sheep/Subscription
+app/etc/modules/Sheep_Subscription.xml                              app/etc/modules/Sheep_Subscription.xml
+app/design/frontend/base/default/layout/sheep_subscription.xml      app/design/frontend/base/default/layout/sheep_subscription.xml
+app/design/frontend/base/default/template/sheep_subscription        app/design/frontend/base/default/template/sheep_subscription
+app/design/adminhtml/default/default/template/sheep_subscription    app/design/adminhtml/default/default/template/sheep_subscription
+app/locale/en_US/template/email/sheep_subscription                  app/locale/en_US/template/email/sheep_subscription

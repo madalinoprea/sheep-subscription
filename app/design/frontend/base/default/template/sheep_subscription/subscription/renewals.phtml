@@ -1,0 +1,67 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    design
+ * @package     rwd_default
+ * @copyright   Copyright (c) 2006-2015 X.commerce, Inc. (http://www.magento.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/** @var Sheep_Subscription_Block_Subscription_View $this */
+$_renewals = $this->getSubscription()->getRelatedRenewals();
+?>
+<?php if (count($_renewals)): ?>
+    <table class="data-table" id="my-renewals-table" summary="<?php echo $this->__('Subscription Renewals') ?>">
+        <col />
+        <col width="1"/>
+        <col width="1"/>
+        <col/>
+        <thead>
+        <tr>
+            <th class="date"><?php echo $this->__('Date') ?></th>
+            <th><?php echo $this->__('Status') ?></th>
+            <th><?php echo $this->__('Order') ?></th>
+            <th><?php echo $this->__('Order Status') ?></th>
+            <th class="a-left"><?php echo $this->__('Last Message') ?></th>
+        </tr>
+        </thead>
+
+        <?php
+        /** @var Sheep_Subscription_Model_Renewal $renewal */
+        foreach ($_renewals as $renewal): ?>
+            <tbody>
+            <tr>
+                <td><?php echo $this->formatDate($renewal->getDateStoreDate(), 'short', true) ?></td>
+                <td><?php echo $renewal->getStatusLabel() ?></td>
+                <td>
+                    <?php if ($renewal->getOrderId()): ?>
+                        <a href="<?php echo $this->getOrderUrl($renewal->getOrderId()) ?>"><?php echo $renewal->getData('order_increment_id') ?></a>
+                    <?php endif ?>
+                </td>
+                <td><?php echo $this->getOrderStatusLabel($renewal->getData('order_status')) ?></td>
+                <td><?php echo $this->__($renewal->getLastMessage()) ?></td>
+            </tr>
+            </tbody>
+        <?php endforeach; ?>
+    </table>
+<?php else: ?>
+    <p><?php echo $this->__('You have no renewals.'); ?></p>
+<?php endif; ?>

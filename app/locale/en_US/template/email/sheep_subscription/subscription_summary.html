@@ -1,0 +1,58 @@
+<!--@subject {{var store.getFrontendName()}}: Your Subscription Summary @-->
+<!--@vars
+{"store url=\"\"":"Store Url",
+"var logo_url":"Email Logo Image Url",
+"var logo_alt":"Email Logo Image Alt",
+"var store.getFrontendName()":"Store Name",
+"store url=\"customer/account/\"":"Customer Account Url",
+"var subscription_list_url":"Subscription Url",
+}
+@-->
+<!--@styles
+@-->
+
+{{template config_path="design/email/header"}}
+{{inlinecss file="email-inline.css"}}
+
+<table cellpadding="0" cellspacing="0" border="0">
+    <tr>
+        <td>
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td class="email-heading">
+                        <h1>Your Subscriptions</h1>
+                        <p>We send regularly e-mail notifications to update you upcoming renewals have changed.</p>
+                    </td>
+                    <td class="store-info">
+                        <h4>Subscription Questions?</h4>
+                        <p>
+                            {{depend store_phone}}
+                            <b>Call Us:</b>
+                            <a href="tel:{{var phone}}">{{var store_phone}}</a><br>
+                            {{/depend}}
+                            {{depend store_hours}}
+                            <span class="no-link">{{var store_hours}}</span><br>
+                            {{/depend}}
+                            {{depend store_email}}
+                            <b>Email:</b> <a href="mailto:{{var store_email}}">{{var store_email}}</a>
+                            {{/depend}}
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td class="order-details">
+            <h3>Your subscriptions</h3>
+            <p>Log in and manage <span class="link"><a href="{{var subscription_list_url}}">your subscriptions</a></span></p>
+        </td>
+    </tr>
+    <tr class="order-information">
+        <td>
+            {{layout handle="sheep_subscription_email_subscription_overview" customer=$customer}}
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer"}}

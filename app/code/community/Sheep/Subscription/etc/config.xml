@@ -1,0 +1,476 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Sheep_Subscription>
+            <version>0.1.18</version>
+        </Sheep_Subscription>
+    </modules>
+
+    <!-- Codes of payment methods that have subscription implementation -->
+    <sheep_subscription>
+        <payment_methods>
+            <authorizenet/>
+            <banktransfer/>
+            <checkmo/>
+            <cashondelivery/>
+            <paypal_express/>
+            <purchaseorder/>
+        </payment_methods>
+    </sheep_subscription>
+
+    <global>
+        <models>
+            <sheep_subscription>
+                <class>Sheep_Subscription_Model</class>
+                <resourceModel>sheep_subscription_resource</resourceModel>
+            </sheep_subscription>
+            <sheep_subscription_resource>
+                <class>Sheep_Subscription_Model_Resource</class>
+                <entities>
+                    <type>
+                        <table>ss_type</table>
+                    </type>
+                    <product_subscription_type>
+                        <table>ss_product_subscription_type</table>
+                    </product_subscription_type>
+                    <subscription>
+                        <table>ss_subscription</table>
+                    </subscription>
+                    <renewal>
+                        <table>ss_renewal</table>
+                    </renewal>
+                    <payment>
+                        <table>ss_payment</table>
+                    </payment>
+                    <profile>
+                        <table>ss_profile</table>
+                    </profile>
+                    <product_subscription_type_price>
+                        <table>ss_product_subscription_type_price</table>
+                    </product_subscription_type_price>
+                </entities>
+            </sheep_subscription_resource>
+            <paypal>
+                <rewrite>
+                    <express>Sheep_Subscription_Model_Payment_Paypal_Express_Method</express>
+                </rewrite>
+            </paypal>
+            <paygate>
+                <rewrite>
+                    <authorizenet>Sheep_Subscription_Model_Payment_Authorizenet_Method</authorizenet>
+                </rewrite>
+            </paygate>
+        </models>
+        <blocks>
+            <sheep_subscription>
+                <class>Sheep_Subscription_Block</class>
+            </sheep_subscription>
+        </blocks>
+        <helpers>
+            <sheep_subscription>
+                <class>Sheep_Subscription_Helper</class>
+            </sheep_subscription>
+        </helpers>
+        <resources>
+            <sheep_subscription_setup>
+                <setup>
+                    <module>Sheep_Subscription</module>
+                </setup>
+            </sheep_subscription_setup>
+        </resources>
+
+        <sales>
+            <quote>
+                <totals>
+                    <sheep_subscription>
+                        <class>sheep_subscription/quote_address_total_subscription</class>
+                    </sheep_subscription>
+                </totals>
+                <item>
+                    <!-- load product subscription attributes on quote/item products -->
+                    <product_attributes>
+                        <pss_is_subscription/>
+                        <pss_subscription_type/>
+                    </product_attributes>
+                </item>
+            </quote>
+        </sales>
+
+        <events>
+            <!-- Adds subscription options on products loaded as sales/quote -->
+            <sales_quote_item_collection_products_after_load>
+                <observers>
+                    <sheep_subscription_add_subscription_options>
+                        <type>singleton</type>
+                        <class>sheep_subscription/observer</class>
+                        <method>addSubscriptionOptionsOnProductCollection</method>
+                    </sheep_subscription_add_subscription_options>
+                </observers>
+            </sales_quote_item_collection_products_after_load>
+
+            <clear_expired_quotes_before>
+                <observers>
+                    <sheep_subscription_whitelist_subscription_quotes>
+                        <type>singleton</type>
+                        <class>sheep_subscription/observer</class>
+                        <method>whitelistSubscriptionQuotes</method>
+                    </sheep_subscription_whitelist_subscription_quotes>
+                </observers>
+            </clear_expired_quotes_before>
+
+
+            <!-- Notification observers -->
+            <pss_pause_subscription>
+                <observers>
+                    <sheep_subscription_notification>
+                        <type>singleton</type>
+                        <model>sheep_subscription/notification_observer</model>
+                        <method>onSubscriptionUpdate</method>
+                    </sheep_subscription_notification>
+                </observers>
+            </pss_pause_subscription>
+
+            <pss_resume_subscription>
+                <observers>
+                    <sheep_subscription_notification>
+                        <type>singleton</type>
+                        <model>sheep_subscription/notification_observer</model>
+                        <method>onSubscriptionUpdate</method>
+                    </sheep_subscription_notification>
+                </observers>
+            </pss_resume_subscription>
+
+            <pss_cancel_subscription>
+                <observers>
+                    <sheep_subscription_notification>
+                        <type>singleton</type>
+                        <model>sheep_subscription/notification_observer</model>
+                        <method>onSubscriptionUpdate</method>
+                    </sheep_subscription_notification>
+                </observers>
+            </pss_cancel_subscription>
+
+            <pss_change_renewal_date>
+                <observers>
+                    <sheep_subscription_notification>
+                        <type>singleton</type>
+                        <model>sheep_subscription/notification_observer</model>
+                        <method>onSubscriptionUpdate</method>
+                    </sheep_subscription_notification>
+                </observers>
+            </pss_change_renewal_date>
+
+            <pss_expire_subscription>
+                <observers>
+                    <sheep_subscription_notification>
+                        <type>singleton</type>
+                        <model>sheep_subscription/notification_observer</model>
+                        <method>onSubscriptionUpdate</method>
+                    </sheep_subscription_notification>
+                </observers>
+            </pss_expire_subscription>
+
+            <pss_renewal_error>
+                <observers>
+                    <sheep_subscription_notification>
+                        <type>singleton</type>
+                        <model>sheep_subscription/notification_observer</model>
+                        <method>onSubscriptionUpdate</method>
+                    </sheep_subscription_notification>
+                </observers>
+            </pss_renewal_error>
+
+            <!-- Records that customer needs to receive updated renewal schedule after renewal was completed -->
+            <pss_renewal_create_order_after>
+                <observers>
+                    <sheep_subscription_add_notification_event>
+                        <type>singleton</type>
+                        <class>sheep_subscription/notification_observer</class>
+                        <method>onRenewalCompleted</method>
+                    </sheep_subscription_add_notification_event>
+                </observers>
+            </pss_renewal_create_order_after>
+
+            <!-- segmentation observers -->
+            <pss_create_subscription>
+                <observers>
+                    <sheep_subscription_segmentation>
+                        <type>singleton</type>
+                        <class>sheep_subscription/segmentation_observer</class>
+                        <method>onActivateSubscription</method>
+                    </sheep_subscription_segmentation>
+                </observers>
+            </pss_create_subscription>
+            <pss_resume_subscription>
+                <observers>
+                    <sheep_subscription_segmentation>
+                        <type>singleton</type>
+                        <class>sheep_subscription/segmentation_observer</class>
+                        <method>onActivateSubscription</method>
+                    </sheep_subscription_segmentation>
+                </observers>
+            </pss_resume_subscription>
+            <pss_pause_subscription>
+                <observers>
+                    <sheep_subscription_segmentation>
+                        <type>singleton</type>
+                        <class>sheep_subscription/segmentation_observer</class>
+                        <method>onDeactivateSubscription</method>
+                    </sheep_subscription_segmentation>
+                </observers>
+            </pss_pause_subscription>
+            <pss_cancel_subscription>
+                <observers>
+                    <sheep_subscription_segmentation>
+                        <type>singleton</type>
+                        <class>sheep_subscription/segmentation_observer</class>
+                        <method>onDeactivateSubscription</method>
+                    </sheep_subscription_segmentation>
+                </observers>
+            </pss_cancel_subscription>
+            <pss_expire_subscription>
+                <observers>
+                    <sheep_subscription_segmentation>
+                        <type>singleton</type>
+                        <class>sheep_subscription/segmentation_observer</class>
+                        <method>onDeactivateSubscription</method>
+                    </sheep_subscription_segmentation>
+                </observers>
+            </pss_expire_subscription>
+
+            <!-- adds subscription related conditions to shopping cart price rules -->
+            <salesrule_rule_condition_combine>
+                <observers>
+                    <sheep_subscription_sales_rules>
+                        <type>singleton</type>
+                        <class>sheep_subscription/salesRule_observer</class>
+                        <method>addSalesRulesConditions</method>
+                    </sheep_subscription_sales_rules>
+                </observers>
+            </salesrule_rule_condition_combine>
+        </events>
+
+        <template>
+            <email>
+                <sheep_subscription_new_subscription translate="label" module="sheep_subscription">
+                    <label>New Subscription</label>
+                    <file>sheep_subscription/subscription_new.html</file>
+                    <type>html</type>
+                </sheep_subscription_new_subscription>
+                <sheep_subscription_overview translate="label" module="sheep_subscription">
+                    <label>Subscription Summary</label>
+                    <file>sheep_subscription/subscription_summary.html</file>
+                    <type>html</type>
+                </sheep_subscription_overview>
+            </email>
+        </template>
+    </global>
+
+    <crontab>
+        <jobs>
+            <sheep_subscription_check_renewals>
+                <schedule>
+                    <config_path>sheep_subscription/renewals/schedule_cron_expr</config_path>
+                </schedule>
+                <run>
+                    <model>sheep_subscription/cron::checkRenewals</model>
+                </run>
+            </sheep_subscription_check_renewals>
+
+            <sheep_subscription_process_renewals>
+                <schedule>
+                    <config_path>sheep_subscription/renewals/process_cron_exp</config_path>
+                </schedule>
+                <run>
+                    <model>sheep_subscription/cron::processRenewals</model>
+                </run>
+            </sheep_subscription_process_renewals>
+
+            <sheep_subscription_notification_upcoming_renewals>
+                <schedule>
+                    <!-- Every sunday at 2:30 -->
+                    <cron_expr>30 2 * * * 6</cron_expr>
+                </schedule>
+                <run>
+                    <model>sheep_subscription/notification_cron::checkNextWeekUpcomingRenewals</model>
+                </run>
+            </sheep_subscription_notification_upcoming_renewals>
+
+            <!-- Every night check payments that are about to expire -->
+            <sheep_subscription_notification_expired_payments>
+                <schedule>
+                    <cron_expr>30 3 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>sheep_subscription/notification_cron::checkExpiredPaymentNotification</model>
+                </run>
+            </sheep_subscription_notification_expired_payments>
+
+            <sheep_subscription_notification_process>
+                <schedule>
+                    <!-- Run every hour -->
+                    <cron_expr>20 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>sheep_subscription/notification_cron::processNotifications</model>
+                </run>
+            </sheep_subscription_notification_process>
+
+            <sheep_subscription_send_inventory_forecast_report>
+                <schedule>
+                    <config_path>sheep_subscription/reports/forecast_cron_expr</config_path>
+                </schedule>
+                <run>
+                    <model>sheep_subscription/cron::sendInventoryForecastReport</model>
+                </run>
+            </sheep_subscription_send_inventory_forecast_report>
+        </jobs>
+    </crontab>
+
+    <default>
+        <sheep_subscription>
+            <account>
+                <allow_management>1</allow_management>
+                <allow_renewal_date_edit>1</allow_renewal_date_edit>
+                <allow_shipping_info_edit>1</allow_shipping_info_edit>
+                <allow_payment_info_edit>1</allow_payment_info_edit>
+            </account>
+            <renewals>
+                <max_failed_payments>5</max_failed_payments>
+
+                <upcoming_renewals_notification>1</upcoming_renewals_notification>
+                <days_before_renewal>5</days_before_renewal>
+
+                <expired_payment_notification>1</expired_payment_notification>
+                <expired_payment_days_before>5</expired_payment_days_before>
+
+                <schedule_cron_expr>*/30 * * * *</schedule_cron_expr>
+                <process_cron_exp>*/10 * * * *</process_cron_exp>
+                <process_iteration_messages>10</process_iteration_messages>
+                <process_message_timeout>7200</process_message_timeout>
+            </renewals>
+            <segmentation>
+                <default_customer_group_promotion></default_customer_group_promotion>
+                <default_customer_group_deomotion></default_customer_group_deomotion>
+            </segmentation>
+            <reports>
+                <qty_ordered_avg_period>30</qty_ordered_avg_period>
+                <forecast_receiver></forecast_receiver>
+                <forecast_cron_expr>0 5 * * 1</forecast_cron_expr>
+                <forecast_period>90</forecast_period>
+            </reports>
+        </sheep_subscription>
+    </default>
+
+    <frontend>
+        <events>
+            <!-- Add subscription options when product is loaded -->
+            <catalog_product_load_after>
+                <observers>
+                    <sheep_subscription_add_subscription_options>
+                        <type>singleton</type>
+                        <class>sheep_subscription/observer</class>
+                        <method>addSubscriptionOptions</method>
+                    </sheep_subscription_add_subscription_options>
+                </observers>
+            </catalog_product_load_after>
+
+            <!-- Only allow subscription payment methods for quotes that have subscriptions -->
+            <payment_method_is_active>
+                <observers>
+                    <sheep_subscription_check_payment_method>
+                        <type>singleton</type>
+                        <class>sheep_subscription/observer</class>
+                        <method>isPaymentMethodAvailable</method>
+                    </sheep_subscription_check_payment_method>
+                </observers>
+            </payment_method_is_active>
+
+            <!-- creates subscriptions for placed order -->
+            <sales_model_service_quote_submit_after>
+                <observers>
+                    <sheep_subscription_create_subscription>
+                        <type>singleton</type>
+                        <class>sheep_subscription/observer</class>
+                        <method>createSubscription</method>
+                    </sheep_subscription_create_subscription>
+                </observers>
+            </sales_model_service_quote_submit_after>
+        </events>
+        <routers>
+            <sheep_subscription>
+                <use>standard</use>
+                <args>
+                    <module>Sheep_Subscription</module>
+                    <frontName>subscriptions</frontName>
+                </args>
+            </sheep_subscription>
+        </routers>
+        <secure_url>
+            <sheep_subscription>/subscriptions/</sheep_subscription>
+        </secure_url>
+        <layout>
+            <updates>
+                <sheep_subscription>
+                    <file>sheep_subscription.xml</file>
+                </sheep_subscription>
+            </updates>
+        </layout>
+    </frontend>
+
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <Sheep_Subscription before="Mage_Adminhtml">Sheep_Subscription_Adminhtml</Sheep_Subscription>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+
+    <adminhtml>
+        <events>
+            <core_block_abstract_prepare_layout_after>
+                <observers>
+                    <sheep_subscription_add_subscription_tab>
+                        <type>singleton</type>
+                        <class>sheep_subscription/adminhtml_observer</class>
+                        <method>addSubscriptionTabs</method>
+                    </sheep_subscription_add_subscription_tab>
+                </observers>
+            </core_block_abstract_prepare_layout_after>
+
+            <!-- associates posted form info on product object -->
+            <catalog_product_prepare_save>
+                <observers>
+                    <sheep_subscription_prepare_product_save>
+                        <type>singleton</type>
+                        <class>sheep_subscription/adminhtml_observer</class>
+                        <method>prepareProductSave</method>
+                    </sheep_subscription_prepare_product_save>
+                </observers>
+            </catalog_product_prepare_save>
+
+            <!-- Saves product subscription types -->
+            <catalog_product_save_before>
+                <observers>
+                    <sheep_subscription_save_subscription_type>
+                        <type>singleton</type>
+                        <class>sheep_subscription/adminhtml_observer</class>
+                        <method>saveProductSubscriptionTypes</method>
+                    </sheep_subscription_save_subscription_type>
+                </observers>
+            </catalog_product_save_before>
+        </events>
+    </adminhtml>
+
+    <phpunit>
+        <suite>
+            <modules>
+                <Sheep_Subscription/>
+            </modules>
+        </suite>
+    </phpunit>
+</config>

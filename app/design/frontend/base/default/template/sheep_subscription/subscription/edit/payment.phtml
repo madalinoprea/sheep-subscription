@@ -1,0 +1,18 @@
+<?php
+
+/** @var Sheep_Subscription_Block_Subscription_Edit_Payment $this */
+?>
+<h2><?php echo $this->__('Change Payment Information'); ?></h2>
+
+<form action="<?php echo $this->getAddSubscriptionToCartUrl() ?>" method="post">
+
+    <p>
+        <?php echo $this->__("We'll add recurring products from this subscription to your cart so that you can provide new payment information. After you complete this order a new subscription will be created with your updated payment information."); ?>
+    </p>
+    <div class="buttons-set">
+        <p class="back-link"><a href="<?php echo $this->getBackUrl() ?>"><small>&laquo; </small><?php echo $this->__('Back to My Subscription') ?></a></p>
+        <button type="submit" class="button">
+            <span><span><?php echo $this->__('Prepare Cart') ?></span></span>
+        </button>
+    </div>
+</form>

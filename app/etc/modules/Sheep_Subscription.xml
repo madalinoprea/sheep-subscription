@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Sheep_Subscription>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Sheep_Util/>
+                <Sheep_Queue/>
+                <Mage_Checkout/>
+                <Mage_Catalog/>
+                <Mage_Sales/>
+            </depends>
+        </Sheep_Subscription>
+    </modules>
+</config>

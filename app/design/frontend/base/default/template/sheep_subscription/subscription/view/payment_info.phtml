@@ -1,0 +1,31 @@
+<?php
+/** @var $this Sheep_Subscription_Block_Subscription_View */
+$_subscription = $this->getSubscription();
+?>
+
+<div class="col2-set order-info-box">
+    <div class="col-1">
+        <div class="box">
+            <div class="box-title">
+                <h2><?php echo $this->__('Billing Address') ?></h2>
+            </div>
+            <div class="box-content">
+                <address><?php echo $_subscription->getBillingAddress()->format('html') ?></address>
+            </div>
+        </div>
+    </div>
+    <div class="col-2">
+        <div class="box box-payment">
+            <div class="box-title">
+                <h2><?php echo $this->__('Payment Method') ?></h2>
+            </div>
+            <div class="box-content">
+                <?php echo $this->getChildHtml('payment_info') ?>
+
+                <?php if($this->canChangePaymentInformation()): ?>
+                    <p><a href="<?php echo $this->getChangePaymentUrl() ?>" title="<?php echo $this->__('Edit Payment Information'); ?>"><?php echo $this->__('Edit Payment Information') ?></a></p>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>

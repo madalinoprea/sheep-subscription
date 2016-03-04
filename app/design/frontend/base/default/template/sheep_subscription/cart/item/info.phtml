@@ -1,0 +1,13 @@
+<?php
+/** @var Sheep_Subscription_Block_Cart_Item_Info $this */
+?>
+<p>
+    <span class="label"><?php echo $this->__('Renewal Date:'); ?></span>
+    <span class="subscription-renewal"><?php echo $this->formatDate($this->getNextRenewal()) ?></span>
+</p>
+
+<?php if ($this->getSubscriptionDiscount()): ?>
+<p>
+    <?php echo $this->__('You save ') ?><span class="subscription-discount"><?php echo $this->getSubscriptionDiscount() ?></span>
+</p>
+<?php endif; ?>

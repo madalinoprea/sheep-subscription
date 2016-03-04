@@ -1,0 +1,159 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2015 X.commerce, Inc. (http://www.magento.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/** @var $this Sheep_Subscription_Block_Adminhtml_Subscription_Edit_Tabs_Info */
+$_subscription = $this->getSubscription();
+$_helper = $this->helper('sheep_subscription/subscription');
+?>
+<div>
+    <input type="hidden" name="order_id" value="<?php echo $_subscription->getId() ?>"/>
+    <div id="order-messages">
+        <?php echo $this->getChildHtml('order_messages') ?>
+    </div>
+
+    <div class="box-left">
+        <!-- Subscription General Information -->
+        <div class="entry-edit">
+            <div class="entry-edit-head">
+                <h4 class="icon-head head-account"><?php echo $this->__('Subscription # %s', $_subscription->getId()) ?></h4>
+            </div>
+
+            <div class="fieldset">
+                <table cellspacing="0" class="form-list">
+                    <tr>
+                        <td class="label"><label><?php echo $this->__('Created Date') ?></label></td>
+                        <td class="value"><strong><?php echo $_subscription->getCreatedAtStoreDate() ?></strong></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label><?php echo $this->__('Start Date') ?></label></td>
+                        <td class="value"><strong><?php echo $_subscription->getStartDateStoreDate() ?></strong></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label><?php echo $this->__('Status') ?></label></td>
+                        <td class="value"><strong><?php echo $_subscription->getStatusLabel() ?></strong></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="box-right">
+        <div class="entry-edit">
+            <div class="entry-edit-head">
+                <h4><?php echo $this->__('Customer Information') ?></h4>
+            </div>
+            <div class="fieldset">
+                <table cellspacing="0" class="form-list">
+                    <tr>
+                        <td class="label"><label><?php echo $this->__('Customer Name') ?></label></td>
+                        <td class="value"><strong><?php echo $_subscription->getCustomer()->getName() ?></strong></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label><?php echo $this->__('Customer E-mail') ?></label></td>
+                        <td class="value"><strong><?php echo $_subscription->getCustomer()->getEmail() ?></strong></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="clear"></div>
+
+    <div class="box-left">
+        <div class="entry-edit">
+            <div class="entry-edit-head">
+                <h4><?php echo $this->__('Billing Address') ?></h4>
+            </div>
+            <div class="fieldset">
+                <address>
+                    <?php echo $_subscription->getBillingAddress()->format('html') ?>
+                </address>
+            </div>
+        </div>
+    </div>
+    <div class="box-right">
+        <div class="entry-edit">
+            <div class="entry-edit-head">
+                <h4><?php echo $this->__('Payment Information') ?></h4>
+            </div>
+            <div class="fieldset">
+                <?php echo $this->getChildHtml('payment_info') ?>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+
+
+    <?php if (!$_subscription->getIsVirtual()): ?>
+        <div class="box-left">
+            <div class="entry-edit">
+                <div class="entry-edit-head">
+                    <h4><?php echo $this->__('Shipping Information') ?></h4>
+                </div>
+                <div class="fieldset">
+                    <address>
+                        <?php echo $_subscription->getShippingAddress()->format('html') ?>
+                    </address>
+                </div>
+            </div>
+        </div>
+
+        <div class="box-right">
+            <div class="entry-edit">
+                <div class="entry-edit-head">
+                    <h4><?php echo $this->__('Shipping Method') ?></h4>
+                </div>
+                <div class="fieldset">
+                    <?php if ($_shippingDescription = $_subscription->getShippingAddress()->getShippingDescription()): ?>
+                        <?php echo $this->escapeHtml($_shippingDescription) ?>
+                    <?php else: ?>
+                        <p><?php echo $this->helper('sheep_subscription')->__('No shipping information available'); ?></p>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="clear"></div>
+    <?php endif; ?>
+
+
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-products"><?php echo $this->__('Items Ordered') ?></h4>
+        </div>
+    </div>
+
+    <?php echo $this->getSubscriptionItems() ?>
+    <div class="clear"></div>
+
+
+    <div class="box-right entry-edit">
+        <div class="entry-edit-head"><h4><?php echo $this->__('Totals') ?></h4></div>
+        <div class="order-totals"><?php echo $this->getSubscriptionTotals() ?></div>
+    </div>
+    <div class="clear"></div>
+</div>

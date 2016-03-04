@@ -1,0 +1,36 @@
+{
+  "name": "madalinoprea/sheep-subscription",
+  "description": "",
+  "type": "magento-module",
+  "keywords": [
+    "Magento", "orders", "subscriptions", "recurring"
+  ],
+  "homepage": "https://moprea.ro",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Madalin Oprea (Mario)"
+    }
+  ],
+  "support": {
+    "wiki": "https://github.com/madalinoprea"
+  },
+  "require": {
+    "magento-hackathon/magento-composer-installer": "*",
+    "madalinoprea/sheep-util": "master",
+    "madalinoprea/sheep-queue": "master"
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://madalinoprea@bitbucket.org/madalinoprea/sheep-util.git"
+    },
+    {
+      "type": "vcs",
+      "url": "https://madalinoprea@bitbucket.org/madalinoprea/sheep-queue.git"
+    }
+  ],
+  "suggest": {
+    "ecomdev/ecomdev_phpunit": "Ability to run unit tests."
+  }
+}

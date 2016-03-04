@@ -1,0 +1,155 @@
+<?php
+/** @var Sheep_Subscription_Block_Subscription_Email_Overview $this */
+$customer = $this->getCustomer();
+$_activeSubscriptions = $this->getActiveSubscriptions();
+$_otherSubscriptions = $this->getInactiveSubscriptions();
+$_upcomingRenewals = $this->getUpcomingRenewals();
+$_expiredPayments = $this->getExpiredPayments();
+$_failingRenewals = $this->getFailingRenewals();
+?>
+
+<?php if (count($_failingRenewals)): ?>
+    <h2><?php echo $this->__('Failing Renewals'); ?></h2>
+    <p class="highlighted-text">
+        <?php echo $this->__("We're having problems trying to process these renewals. Please review error message and try to update subscription."); ?>
+    </p>
+
+    <table class="items" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+        <tr>
+            <th class="cell-name"><?php echo $this->__('Subscription #'); ?></th>
+            <th class="cell-name"><?php echo $this->__('Renewal Date'); ?></th>
+            <th class="cell-name"><?php echo $this->__('Error Message'); ?></th>
+        </tr>
+        </thead>
+
+        <?php
+        /** @var Sheep_Subscription_Model_Renewal $renewal */
+        foreach($_failingRenewals as $renewal): ?>
+            <?php $subscription = $_activeSubscriptions->getItemById($renewal->getSubscriptionId()); ?>
+            <tr>
+                <td class="cell-content"><span class="link">
+                    <a href="<?php echo $this->getSubscriptionUrl($renewal->getSubscriptionId()) ?>">
+                        #<?php echo $renewal->getSubscriptionId() ?> <?php echo $subscription ? ':' . $subscription->getShortDescription() : '' ?>
+                    </a>
+                </span></td>
+                <td class="cell-content"><?php echo $this->formatDate($renewal->getDateStoreDate()) ?></td>
+                <td class="cell-content"><?php echo $this->escapeHtml($renewal->getLastMessage()) ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+<?php endif; ?>
+
+<?php if (count($_expiredPayments)): ?>
+    <h3><?php echo $this->__('Expired Payment Information'); ?></h3>
+    <p class="highlighted-text"><?php echo $this->__('You currently have active subscriptions that have associated payment information that is about to expire.'); ?></p>
+    <p><?php echo $this->__('Please update payment information for the following subscriptions.'); ?></p>
+
+    <table class="items" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+            <tr>
+                <th class="cell-name"><?php echo $this->__('Subscription #'); ?></th>
+                <th class="cell-name"><?php echo $this->__('Payment Expiration Date'); ?></th>
+            </tr>
+        </thead>
+
+        <?php
+        /** @var Sheep_Subscription_Model_Payment $payment */
+        foreach($_expiredPayments as $payment): ?>
+            <?php $subscription = $_activeSubscriptions->getItemById($payment->getSubscriptionId()); ?>
+            <tr>
+                <td class="cell-content"><span class="link">
+                        <a href="<?php echo $this->getSubscriptionUrl($payment->getSubscriptionId()) ?>">
+                            #<?php echo $payment->getSubscriptionId() ?> <?php echo $subscription ? ':' . $subscription->getShortDescription() : '' ?>
+                        </a></span></td>
+                <td class="cell-content"><?php echo $this->formatDate($payment->getExpirationDate()) ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+<?php endif; ?>
+
+<h3><?php echo $this->__('Upcoming Renewals'); ?></h3>
+<?php if ($_upcomingRenewals->getSize()): ?>
+    <table class="items" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+        <tr>
+            <th class="cell-name"><?php echo $this->__('Subscription #'); ?></th>
+            <th class="cell-name"><?php echo $this->__('Frequency'); ?></th>
+            <th class="cell-name"><?php echo $this->__('Total'); ?></th>
+            <th class="cell-name"><?php echo $this->__('Next Payment'); ?></th>
+        </tr>
+        </thead>
+
+        <?php
+        /** @var Sheep_Subscription_Model_Renewal $_renewal */
+        foreach ($_upcomingRenewals as $_renewal): ?>
+            <?php $_subscription = $_renewal->getSubscription(); ?>
+            <tr>
+                <td class="cell-content"><span class="link"><a href="<?php echo $this->getSubscriptionUrl($_subscription->getId()) ?>">
+                            #<?php echo $_subscription->getId() ?>: <?php echo $_subscription->getShortDescription() ?>
+                        </a></span></td>
+                <td class="cell-content"><?php echo $_subscription->getType()->getTitle() ?></td>
+                <td class="cell-content"><?php echo $this->helper('checkout')->formatPrice($_subscription->getQuote()->getGrandTotal(), true, true) ?></td>
+                <td class="cell-content"><?php echo $this->formatDate($_renewal->getDate()) ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+<?php else: ?>
+    <p><?php echo $this->__("You don't have any upcoming renewals."); ?></p>
+<?php endif; ?>
+
+<h3><?php echo $this->__('Active Subscriptions'); ?></h3>
+<?php if ($_activeSubscriptions->getSize()): ?>
+    <table class="items" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+        <tr>
+            <th class="cell-name"><?php echo $this->__('Subscription #'); ?></th>
+            <th class="cell-name"><?php echo $this->__('Frequency'); ?></th>
+            <th class="cell-name"><?php echo $this->__('Total'); ?></th>
+            <th class="cell-name"><?php echo $this->__('Next Payment'); ?></th>
+        </tr>
+    </thead>
+
+    <?php
+    /** @var Sheep_Subscription_Model_Subscription $_subscription */
+    foreach ($_activeSubscriptions as $_subscription): ?>
+        <tr>
+            <td class="cell-content"><span class="link"><a href="<?php echo $this->getSubscriptionUrl($_subscription->getId()) ?>">
+                        #<?php echo $_subscription->getId() ?>: <?php echo $_subscription->getShortDescription() ?>
+                    </a></span></td>
+            <td class="cell-content"><?php echo $_subscription->getType()->getTitle() ?></td>
+            <td class="cell-content"><?php echo $this->helper('checkout')->formatPrice($_subscription->getQuote()->getGrandTotal(), true, true) ?></td>
+            <td class="cell-content"><?php echo $this->formatDate($_subscription->getRenewalDate()) ?></td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+<?php else: ?>
+    <p><?php echo $this->__("You don't have any active subscriptions."); ?></p>
+<?php endif; ?>
+
+<?php if ($_otherSubscriptions->getSize()): ?>
+    <h3><?php echo $this->__('Other Subscriptions'); ?></h3>
+    <table class="items" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+        <tr>
+            <th class="cell-name"><?php echo $this->__('Subscription'); ?></th>
+            <th class="cell-name"><?php echo $this->__('Status'); ?></th>
+            <th class="cell-name"><?php echo $this->__('Frequency'); ?></th>
+            <th class="cell-name"><?php echo $this->__('Total'); ?></th>
+        </tr>
+        </thead>
+
+        <?php
+        /** @var Sheep_Subscription_Model_Subscription $_subscription */
+        foreach ($_otherSubscriptions as $_subscription): ?>
+            <tr>
+                <td class="cell-content"><span class="link"><a href="<?php echo $this->getSubscriptionUrl($_subscription->getId()) ?>">
+                            #<?php echo $_subscription->getId() ?>: <?php echo $_subscription->getShortDescription() ?>
+                        </a></span></td>
+                <td class="cell-content"><?php echo $_subscription->getStatusLabel() ?></td>
+                <td class="cell-content"><?php echo $_subscription->getType()->getTitle() ?></td>
+                <td class="cell-content"><?php echo $this->helper('checkout')->formatPrice($_subscription->getQuote()->getGrandTotal(), true, true) ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+<?php endif; ?>
