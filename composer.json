@@ -17,8 +17,8 @@
   },
   "require": {
     "magento-hackathon/magento-composer-installer": "*",
-    "madalinoprea/sheep-util": "master",
-    "madalinoprea/sheep-queue": "master"
+    "madalinoprea/sheep-util": "dev-master",
+    "madalinoprea/sheep-queue": "dev-master"
   },
   "repositories": [
     {
