@@ -38,8 +38,19 @@ class Sheep_Subscription_Model_Payment_Paypal_Express_Method extends Mage_Paypal
 
 
     /**
+     * @param Mage_Sales_Model_Order_Payment $payment
+     * @param                                $amount
+     * @return Mage_Paypal_Model_Express
+     */
+    protected function _parentPlaceOrder(Mage_Sales_Model_Order_Payment $payment, $amount)
+    {
+        return parent::_placeOrder($payment, $amount);
+    }
+
+
+    /**
      * Overwrites parent method to allow to place order for subscription renewals using customer's
-     * billing aggreements
+     * billing agreements
      *
      * @param Mage_Sales_Model_Order_Payment $payment
      * @param float $amount
@@ -49,7 +60,7 @@ class Sheep_Subscription_Model_Payment_Paypal_Express_Method extends Mage_Paypal
     {
         $isRenewal = $payment->getOrder()->getQuote()->getPssIsSubscription() == Sheep_Subscription_Model_Subscription::QUOTE_IS_SUBSCRIPTION_YES;
 
-        return $isRenewal ? $this->_placeRenewalOrder($payment, $amount) : parent::_placeOrder($payment, $amount);
+        return $isRenewal ? $this->_placeRenewalOrder($payment, $amount) : $this->_parentPlaceOrder($payment, $amount);
     }
 
 

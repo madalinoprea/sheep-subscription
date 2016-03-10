@@ -101,6 +101,9 @@ class Sheep_Subscription_Test_Block_Subscription_Info extends EcomDev_PHPUnit_Te
      */
     public function testAddSubscriptionManagementLinksWithSettingEnabled()
     {
+        $helperMock = $this->getHelperMock('sheep_subscription');
+        $this->replaceByMock('helper', 'sheep_subscription', $helperMock);
+
         $subscriptionMock = $this->getModelMock('sheep_subscription/subscription', array('getId', 'getOriginalOrderId', 'getPayment'));
         $subscriptionMock->expects($this->any())->method('getId')->willReturn(1000);
 

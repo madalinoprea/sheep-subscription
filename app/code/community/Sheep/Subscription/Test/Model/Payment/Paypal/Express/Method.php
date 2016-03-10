@@ -111,11 +111,6 @@ class Sheep_Subscription_Test_Model_Payment_Paypal_Express_Method extends EcomDe
 
     public function testPlaceOrder()
     {
-        // Replace api
-        $nvpApiMock = $this->getModelMock('paypal/api_nvp', array('callDoExpressCheckoutPayment'));
-        $nvpApiMock->expects($this->once())->method('callDoExpressCheckoutPayment');
-        $this->replaceByMock('model', 'paypal/api_nvp', $nvpApiMock);
-
         $quote = $this->getModelMock('sales/quote', array('getPssIsSubscription'));
         $quote->expects($this->any())->method('getPssHasSubscriptions')->willReturn(Sheep_Subscription_Model_Subscription::QUOTE_IS_SUBSCRIPTION_NO);
 
@@ -125,9 +120,9 @@ class Sheep_Subscription_Test_Model_Payment_Paypal_Express_Method extends EcomDe
         $payment = $this->getModelMock('sales/order_payment', array('getOrder'));
         $payment->expects($this->any())->method('getOrder')->willReturn($order);
 
-        $model = $this->getModelMock('sheep_subscription/payment_paypal_express_method', array('_placeRenewalOrder', '_importToPayment'));
+        $model = $this->getModelMock('sheep_subscription/payment_paypal_express_method', array('_placeRenewalOrder', '_parentPlaceOrder'));
         $model->expects($this->never())->method('_placeRenewalOrder');
-        $model->expects($this->once())->method('_importToPayment')->with($nvpApiMock, $payment);
+        $model->expects($this->once())->method('_parentPlaceOrder')->with($payment, 256);
 
         EcomDev_Utils_Reflection::invokeRestrictedMethod($model, '_placeOrder', array($payment, 256));
     }

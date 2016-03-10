@@ -220,6 +220,10 @@ class Sheep_Subscription_Test_Model_Notification_Service extends EcomDev_PHPUnit
      */
     public function testSendCustomerOverviewEmail()
     {
+        $helperMock = $this->getHelperMock('sheep_subscription', array('getSubscriptionListUrl'));
+        $helperMock->expects($this->once())->method('getSubscriptionListUrl')->willReturn('subscription list url');
+        $this->replaceByMock('helper', 'sheep_subscription', $helperMock);
+
         $customerMock = $this->getModelMock('customer/customer', array('load', 'getEmail', 'getName', 'getStore'));
         $customerMock->expects($this->once())->method('load')->with(100)->willReturnSelf();
         $customerMock->expects($this->any())->method('getEmail')->willReturn('mario@moprea.ro');
